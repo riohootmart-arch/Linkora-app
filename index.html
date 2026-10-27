@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Linkora</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#0f1420;--card:#18202f;--txt:#eef2f8;--mut:#8b97ab;--acc:#3b82f6;--up:#22c55e;--down:#ef4444;--line:#26314a}
+@media (prefers-color-scheme:light){:root{--bg:#f2f5fa;--card:#fff;--txt:#101828;--mut:#667085;--line:#e3e8f0}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--tg-theme-bg-color,var(--bg));color:var(--tg-theme-text-color,var(--txt));font:15px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:30px}
+header{padding:16px 16px 6px}
+h1{margin:0;font-size:20px}.sub{color:var(--mut);font-size:12.5px;margin-top:2px}
+.tabs{position:sticky;top:0;z-index:5;display:flex;gap:6px;padding:10px 12px;background:var(--tg-theme-bg-color,var(--bg));overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit;font-size:14px}
+.tab.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.wrap{padding:4px 12px}
+input.s{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit;margin:4px 0 10px}
+.card{display:flex;align-items:center;gap:12px;padding:11px 12px;margin-bottom:8px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.av{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:17px}
+.mid{flex:1;min-width:0}.nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{color:var(--mut);font-size:12.5px}
+.rk{flex:none;width:26px;text-align:center;font-weight:700;color:var(--mut)}
+.d{flex:none;font-size:13px;font-weight:600;text-align:right}.up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--mut)}
+.open{flex:none;border:0;background:var(--acc);color:#fff;border-radius:10px;padding:8px 12px;font:inherit;font-size:13px}
+.empty{text-align:center;color:var(--mut);padding:40px 0}
+h2{font-size:15px;margin:14px 2px 8px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.big{display:flex;justify-content:space-between;gap:8px;text-align:center}
+.big div{flex:1}.big b{display:block;font-size:19px}.big span{color:var(--mut);font-size:12px}
+svg{width:100%;height:130px;display:block;margin-top:10px}
+select{width:100%;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit}
+.rng{display:flex;gap:6px;margin:10px 0 0}.rng .tab{padding:5px 12px;font-size:13px}
+</style></head><body>
+<header><h1 id="ttl"></h1><div class="sub" id="upd"></div></header>
+<div class="tabs" id="tabs"></div>
+<div class="wrap" id="view"></div>
+<script>
+const tg=window.Telegram&&Telegram.WebApp; if(tg){tg.ready();tg.expand();}
+const L={
+es:{t:"Explorar la red",n:"Normal",a:"+18",r:"Ranking",s:"Estadísticas",q:"Buscar canal…",o:"Abrir",m:"miembros",e:"Sin resultados",up:"Actualizado",pick:"Elige un canal",st:"Al inicio",en:"Ahora",ch:"Cambio",d7:"7 días",d14:"14 días",top:"Mayor crecimiento",g:"grupo",c:"canal",nd:"Aún sin historial"},
+en:{t:"Explore the network",n:"Normal",a:"+18",r:"Ranking",s:"Stats",q:"Search channel…",o:"Open",m:"members",e:"No results",up:"Updated",pick:"Choose a channel",st:"Start",en:"Now",ch:"Change",d7:"7 days",d14:"14 days",top:"Top growth",g:"group",c:"channel",nd:"No history yet"},
+pt:{t:"Explorar a rede",n:"Normal",a:"+18",r:"Ranking",s:"Estatísticas",q:"Buscar canal…",o:"Abrir",m:"membros",e:"Sem resultados",up:"Atualizado",pick:"Escolha um canal",st:"Início",en:"Agora",ch:"Variação",d7:"7 dias",d14:"14 dias",top:"Maior crescimento",g:"grupo",c:"canal",nd:"Sem histórico ainda"},
+ru:{t:"Обзор сети",n:"Обычные",a:"+18",r:"Рейтинг",s:"Статистика",q:"Найти канал…",o:"Открыть",m:"участников",e:"Ничего не найдено",up:"Обновлено",pick:"Выберите канал",st:"Начало",en:"Сейчас",ch:"Изменение",d7:"7 дней",d14:"14 дней",top:"Лучший рост",g:"группа",c:"канал",nd:"Истории пока нет"},
+hi:{t:"नेटवर्क देखें",n:"सामान्य",a:"+18",r:"रैंकिंग",s:"आँकड़े",q:"चैनल खोजें…",o:"खोलें",m:"सदस्य",e:"कोई परिणाम नहीं",up:"अपडेट",pick:"चैनल चुनें",st:"शुरुआत",en:"अभी",ch:"बदलाव",d7:"7 दिन",d14:"14 दिन",top:"सबसे ज़्यादा वृद्धि",g:"ग्रुप",c:"चैनल",nd:"अभी इतिहास नहीं"}};
+const qs=new URLSearchParams(location.search);
+let lang=(qs.get("lang")||(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user&&tg.initDataUnsafe.user.language_code)||navigator.language||"es").slice(0,2);
+if(!L[lang])lang="es"; const T=L[lang];
+let DATA=null,tab="n",q="",sel=null,days=7;
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString(lang==="hi"?"en-IN":lang);
+const col=n=>"hsl("+((n.id*47+n.name.length*23)%360)+",55%,45%)";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function delta(c,d){const h=c.history||[];if(h.length<2)return null;const a=h[Math.max(0,h.length-1-d)][1];return h[h.length-1][1]-a}
+function dtxt(v){if(v===null)return'<span class="flat">–</span>';const s=v>0?"+":"";return`<span class="${v>0?"up":v<0?"down":"flat"}">${s}${fmt(v)}</span>`}
+function card(c,i){const dv=delta(c,1);
+ return`<div class="card">${i!=null?`<div class="rk">${i<3?["🥇","🥈","🥉"][i]:i+1}</div>`:""}<div class="av" style="background:${col(c)}">${esc(c.name.trim().charAt(0).toUpperCase())}</div>
+ <div class="mid"><div class="nm">${esc(c.name)}</div><div class="meta">${fmt(c.members)} ${T.m} · ${c.type==="group"?T.g:T.c}</div></div>
+ <div class="d">${dtxt(dv)}</div><button class="open" data-l="${esc(c.link||"")}">${T.o}</button></div>`}
+function list(arr,rank){arr=arr.filter(c=>c.name.toLowerCase().includes(q.toLowerCase()));
+ return arr.length?arr.map((c,i)=>card(c,rank?i:null)).join(""):`<div class="empty">${T.e}</div>`}
+function chart(c){const h=c.history.slice(-(days+1));if(h.length<2)return`<div class="empty">${T.nd}</div>`;
+ const v=h.map(x=>x[1]),mn=Math.min(...v),mx=Math.max(...v),r=(mx-mn)||1,W=300,H=120,p=8;
+ const pts=v.map((y,i)=>[p+i*(W-2*p)/(v.length-1),H-p-(y-mn)/r*(H-2*p)]);
+ const up=v[v.length-1]>=v[0],cl=up?"#22c55e":"#ef4444",path=pts.map((a,i)=>(i?"L":"M")+a[0].toFixed(1)+" "+a[1].toFixed(1)).join(" ");
+ return`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${path} L${pts[pts.length-1][0]} ${H} L${pts[0][0]} ${H}Z" fill="${cl}" opacity=".13"/><path d="${path}" fill="none" stroke="${cl}" stroke-width="2.4" stroke-linejoin="round"/></svg>`}
+function stats(){const cs=DATA.channels;if(sel===null||!cs.find(c=>c.id===sel))sel=null;
+ let h=`<select id="pick"><option value="">${T.pick}</option>${cs.map(c=>`<option value="${c.id}"${c.id===sel?" selected":""}>${esc(c.name)}</option>`).join("")}</select>`;
+ const c=cs.find(x=>x.id===sel);
+ if(c){const hh=c.history,st=hh[Math.max(0,hh.length-1-days)][1],en=hh[hh.length-1][1],d=en-st,pc=st?(d/st*100):0;
+  h+=`<div class="rng"><button class="tab ${days===7?"on":""}" data-d="7">${T.d7}</button><button class="tab ${days===14?"on":""}" data-d="14">${T.d14}</button></div>
+  <div class="box"><div class="big"><div><b>${fmt(st)}</b><span>${T.st}</span></div><div><b>${fmt(en)}</b><span>${T.en}</span></div><div><b>${dtxt(d)}</b><span>${T.ch} ${pc>=0?"+":""}${pc.toFixed(1)}%</span></div></div>${chart(c)}</div>`}
+ const top=[...cs].map(c=>({c,d:delta(c,days)})).filter(x=>x.d!==null).sort((a,b)=>b.d-a.d).slice(0,10);
+ h+=`<h2>🔥 ${T.top} · ${days===7?T.d7:T.d14}</h2>`+top.map((x,i)=>card(x.c,i).replace(/<div class="d">.*?<\/div>/,`<div class="d">${dtxt(x.d)}</div>`)).join("");return h}
+function render(){const cs=DATA.channels;let h="";
+ if(tab==="n"||tab==="a"){h=`<input class="s" id="q" placeholder="${T.q}" value="${esc(q)}">`+list(cs.filter(c=>c.cat===(tab==="n"?"normal":"adult")).sort((a,b)=>b.members-a.members))}
+ else if(tab==="r"){h=`<input class="s" id="q" placeholder="${T.q}" value="${esc(q)}">`+list([...cs].sort((a,b)=>b.members-a.members),true)}
+ else h=stats();
+ $("view").innerHTML=h;
+ const qi=$("q");if(qi)qi.oninput=e=>{q=e.target.value;const p=qi.selectionStart;render();const n=$("q");n.focus();n.setSelectionRange(p,p)};
+ const pk=$("pick");if(pk)pk.onchange=e=>{sel=e.target.value===""?null:+e.target.value;render()};
+ document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{days=+b.dataset.d;render()});
+ document.querySelectorAll(".open").forEach(b=>b.onclick=()=>{const l=b.dataset.l;if(!l)return;if(tg&&l.startsWith("https://t.me/"))tg.openTelegramLink(l);else window.open(l,"_blank")})}
+function tabs(){$("tabs").innerHTML=[["n",T.n],["a",T.a],["r","🏆 "+T.r],["s","📊 "+T.s]].map(([k,v])=>`<button class="tab ${tab===k?"on":""}" data-t="${k}">${v}</button>`).join("");
+ document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{tab=b.dataset.t;q="";tabs();render();window.scrollTo(0,0)})}
+$("ttl").textContent="🌐 "+T.t;document.title=T.t;
+fetch("data.json?"+Date.now()).then(r=>r.json()).then(d=>{DATA=d;$("upd").textContent=T.up+": "+new Date(d.updated).toLocaleString(lang)+" · "+d.channels.length;tabs();render()}).catch(()=>{$("view").innerHTML='<div class="empty">⚠️</div>'});
+</script></body></html>
