@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="color-scheme" content="dark light">
+<title>Linkora · Stats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#0a0d16;--card:#131827;--card2:#1a2033;--line:#ffffff14;--txt:#f1f4fb;--mut:#8d97ae;--acc:#5b8cff;--acc2:#8a63ff;
+--grad:linear-gradient(135deg,#4f8cff 0%,#7b5cff 100%);--glow:#5b8cff33;--up:#34d399;--down:#fb7185;--r:22px;--font:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+:root[data-theme=light]{--bg:#f3f5fb;--card:#ffffff;--card2:#eef1f9;--line:#0f172a12;--txt:#0f172a;--mut:#64708a;--glow:#5b8cff22;--up:#059669;--down:#e11d48}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--txt);font:500 15px/1.4 var(--font);-webkit-font-smoothing:antialiased;
+background:radial-gradient(520px 320px at 90% -60px,#7b5cff30,transparent 70%),radial-gradient(520px 340px at -10% -40px,#4f8cff2e,transparent 70%),var(--bg);padding:0 16px calc(40px + env(safe-area-inset-bottom))}
+:root[data-theme=light] body{background:radial-gradient(520px 320px at 90% -60px,#7b5cff1c,transparent 70%),radial-gradient(520px 340px at -10% -40px,#4f8cff1c,transparent 70%),var(--bg)}
+.num{font-variant-numeric:tabular-nums}
+header{padding:22px 2px 14px}
+header small{color:var(--mut);font-weight:600;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase}
+header h1{margin:2px 0 0;font-size:26px;font-weight:800;letter-spacing:-.03em}
+.chs{display:flex;gap:9px;overflow-x:auto;margin:0 -16px 14px;padding:2px 16px 4px;scrollbar-width:none}
+.chs::-webkit-scrollbar{display:none}
+.cc{flex:none;display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--txt);font:700 13px var(--font);cursor:pointer;transition:.2s;max-width:210px}
+.cc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc.on{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 8px 20px var(--glow)}
+.cc.all{padding-left:14px}
+.av{flex:none;position:relative;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;overflow:hidden;box-shadow:inset 0 0 0 1px #ffffff25}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s}.av img.ok{opacity:1}
+.av.l{width:46px;height:46px;border-radius:16px;font-size:18px}
+.hero{position:relative;border-radius:28px;padding:20px 18px 12px;background:linear-gradient(160deg,#2a3f8f 0%,#4b3aa8 55%,#5b3fb5 100%);color:#fff;overflow:hidden;box-shadow:0 18px 40px #4b3aa855;animation:in .5s both}
+:root[data-theme=light] .hero{box-shadow:0 18px 36px #5b3fb544}
+.hero:before{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#ffffff2e,transparent 70%)}
+.hl{font-size:13px;font-weight:600;opacity:.8}
+.hn{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1.1;margin:2px 0 10px}
+.dl{display:flex;gap:7px;flex-wrap:wrap}
+.d{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:999px;background:#ffffff1f;font-size:12.5px;font-weight:700;backdrop-filter:blur(6px)}
+.d.u{color:#86efac}.d.d{color:#fecdd3}.d b{font-weight:600;opacity:.75}
+.rng{display:flex;gap:4px;margin:14px 0 2px;padding:3px;border-radius:14px;background:#00000026;width:max-content}
+.rng button{border:0;background:none;color:#ffffffb3;font:700 12px var(--font);padding:7px 12px;border-radius:11px;cursor:pointer}
+.rng button.on{background:#ffffff;color:#2b2f6b}
+.cw{position:relative;margin:6px -6px 0;touch-action:pan-y}
+svg.ch{display:block;width:100%;height:170px;overflow:visible}
+.tip{position:absolute;top:2px;pointer-events:none;transform:translateX(-50%);padding:6px 10px;border-radius:12px;background:#0b0e1ccc;backdrop-filter:blur(8px);font-size:12px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;text-align:center}
+.tip small{display:block;font-weight:600;opacity:.7;font-size:11px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+.k{padding:15px 15px 14px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);animation:in .5s both}
+.k small{display:flex;align-items:center;gap:6px;color:var(--mut);font-weight:600;font-size:12px}
+.k b{display:block;font-size:24px;font-weight:800;letter-spacing:-.03em;margin-top:6px}
+.k i{font-style:normal;color:var(--mut);font-size:12px;font-weight:600}
+.up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--mut)}
+h2{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:24px 2px 12px}
+.list{display:flex;flex-direction:column;gap:9px}
+.day{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.day>span{flex:none;width:62px;font-weight:700;font-size:13px}.day>span small{display:block;color:var(--mut);font-weight:600;font-size:11px}
+.bw{flex:1;height:8px;border-radius:99px;background:var(--card2);position:relative;overflow:hidden}
+.bw i{position:absolute;top:0;bottom:0;border-radius:99px}
+.day em{flex:none;width:54px;text-align:right;font-style:normal;font-weight:800;font-size:14px}
+.cr{display:flex;align-items:center;gap:13px;padding:13px;border-radius:20px;background:var(--card);border:1px solid var(--line);cursor:pointer}
+.cr .mid{flex:1;min-width:0}.cr .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr .mt{color:var(--mut);font-size:12.5px;font-weight:600;margin-top:2px}
+.cr svg{flex:none;width:74px;height:34px}
+.cr .r{flex:none;text-align:right;font-weight:800}.cr .r small{display:block;font-weight:700;font-size:12px}
+.rank{display:flex;align-items:center;gap:14px;margin-top:14px;padding:16px;border-radius:var(--r);background:var(--card);border:1px solid var(--line)}
+.rank .t{font-size:30px;font-weight:800;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rank p{margin:0;color:var(--mut);font-weight:600;font-size:13px}.rank p b{color:var(--txt)}
+.pb{height:8px;border-radius:99px;background:var(--card2);margin-top:8px;overflow:hidden}.pb i{display:block;height:100%;border-radius:99px;background:var(--grad)}
+.msg{text-align:center;padding:90px 24px;color:var(--mut)}.msg .e{font-size:54px;margin-bottom:10px}.msg b{display:block;color:var(--txt);font-size:18px;font-weight:800;margin-bottom:6px}
+.sk{height:120px;border-radius:var(--r);margin-bottom:11px;background:linear-gradient(100deg,var(--card) 30%,var(--card2) 50%,var(--card) 70%);background-size:200% 100%;animation:sh 1.3s infinite linear}
+@keyframes sh{to{background-position:-200% 0}}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:22px}
+</style></head><body>
+<div id="app"><header><small id="hs"></small><h1 id="ht"></h1></header><div class="sk" style="height:60px"></div><div class="sk" style="height:300px"></div><div class="sk"></div></div>
+<script>
+const tg=window.Telegram&&Telegram.WebApp;
+const L={
+es:{hs:"Tu panel",ht:"Estadísticas",all:"Todos",mem:"Miembros",mem2:"miembros",tot:"Miembros totales",h24:"24 h",d7:"7 d",d30:"30 d",grow:"Crecimiento",best:"Mejor día",avg:"Promedio diario",now:"ahora",perday:"por día",
+ rank:"Posición en la red",of:"de",top:"Estás en el",topq:"% superior",daily:"Día a día",chans:"Tus canales",upd:"Actualizado",dayn:"días",
+ nokey:"Abre esta página desde el bot",nokey2:"Toca el botón 📊 Estadísticas dentro de «Mis canales».",nodata:"Aún no hay datos tuyos",nodata2:"Las estadísticas aparecen después de la próxima actualización. Vuelve en unas horas.",
+ nohist:"Estamos recopilando datos",nohist2:"Necesitamos al menos dos días para mostrar tu crecimiento. Vuelve mañana.",err:"No se pudo cargar",retry:"Reintentar",group:"Grupo",channel:"Canal",today:"Hoy"},
+en:{hs:"Your dashboard",ht:"Statistics",all:"All",mem:"Members",mem2:"members",tot:"Total members",h24:"24 h",d7:"7 d",d30:"30 d",grow:"Growth",best:"Best day",avg:"Daily average",now:"now",perday:"per day",
+ rank:"Network position",of:"of",top:"You're in the top",topq:"%",daily:"Day by day",chans:"Your channels",upd:"Updated",dayn:"days",
+ nokey:"Open this page from the bot",nokey2:"Tap the 📊 Statistics button inside “My channels”.",nodata:"No data for you yet",nodata2:"Statistics appear after the next update. Come back in a few hours.",
+ nohist:"We're collecting data",nohist2:"We need at least two days to show your growth. Come back tomorrow.",err:"Couldn't load",retry:"Retry",group:"Group",channel:"Channel",today:"Today"},
+pt:{hs:"Seu painel",ht:"Estatísticas",all:"Todos",mem:"Membros",mem2:"membros",tot:"Total de membros",h24:"24 h",d7:"7 d",d30:"30 d",grow:"Crescimento",best:"Melhor dia",avg:"Média diária",now:"agora",perday:"por dia",
+ rank:"Posição na rede",of:"de",top:"Você está no top",topq:"%",daily:"Dia a dia",chans:"Seus canais",upd:"Atualizado",dayn:"dias",
+ nokey:"Abra esta página pelo bot",nokey2:"Toque no botão 📊 Estatísticas em «Meus canais».",nodata:"Ainda sem dados seus",nodata2:"As estatísticas aparecem após a próxima atualização. Volte em algumas horas.",
+ nohist:"Estamos coletando dados",nohist2:"Precisamos de pelo menos dois dias para mostrar seu crescimento. Volte amanhã.",err:"Não foi possível carregar",retry:"Tentar de novo",group:"Grupo",channel:"Canal",today:"Hoje"},
+ru:{hs:"Ваша панель",ht:"Статистика",all:"Все",mem:"Участники",mem2:"участников",tot:"Всего участников",h24:"24 ч",d7:"7 д",d30:"30 д",grow:"Рост",best:"Лучший день",avg:"В среднем в день",now:"сейчас",perday:"в день",
+ rank:"Место в сети",of:"из",top:"Вы в топ",topq:"%",daily:"По дням",chans:"Ваши каналы",upd:"Обновлено",dayn:"дн.",
+ nokey:"Откройте страницу из бота",nokey2:"Нажмите кнопку 📊 Статистика в разделе «Мои каналы».",nodata:"Данных пока нет",nodata2:"Статистика появится после следующего обновления. Загляните через несколько часов.",
+ nohist:"Мы собираем данные",nohist2:"Нужно минимум два дня, чтобы показать рост. Загляните завтра.",err:"Не удалось загрузить",retry:"Повторить",group:"Группа",channel:"Канал",today:"Сегодня"},
+hi:{hs:"आपका डैशबोर्ड",ht:"आँकड़े",all:"सभी",mem:"सदस्य",mem2:"सदस्य",tot:"कुल सदस्य",h24:"24 घं",d7:"7 दि",d30:"30 दि",grow:"वृद्धि",best:"सबसे अच्छा दिन",avg:"दैनिक औसत",now:"अभी",perday:"प्रति दिन",
+ rank:"नेटवर्क में स्थान",of:"में से",top:"आप शीर्ष",topq:"% में हैं",daily:"दिन-प्रतिदिन",chans:"आपके चैनल",upd:"अपडेट",dayn:"दिन",
+ nokey:"यह पेज बॉट से खोलें",nokey2:"«मेरे चैनल» में 📊 आँकड़े बटन दबाएँ।",nodata:"अभी आपका डेटा नहीं है",nodata2:"अगले अपडेट के बाद आँकड़े दिखेंगे। कुछ घंटों में लौटें।",
+ nohist:"हम डेटा जुटा रहे हैं",nohist2:"वृद्धि दिखाने के लिए कम से कम दो दिन चाहिए। कल लौटें।",err:"लोड नहीं हो सका",retry:"फिर कोशिश करें",group:"ग्रुप",channel:"चैनल",today:"आज"}};
+const qs=new URLSearchParams(location.search);
+let lang=(qs.get("lang")||(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user&&tg.initDataUnsafe.user.language_code)||navigator.language||"es").slice(0,2);
+if(!L[lang])lang="es";const T=L[lang];document.documentElement.lang=lang;
+const dark=tg&&tg.colorScheme?tg.colorScheme==="dark":!(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches);
+document.documentElement.dataset.theme=dark?"dark":"light";
+if(tg){try{tg.ready();tg.expand();tg.setHeaderColor(dark?"#0a0d16":"#f3f5fb");tg.setBackgroundColor(dark?"#0a0d16":"#f3f5fb")}catch(e){}}
+const loc=lang==="hi"?"en-IN":lang,$=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=n=>Math.round(n).toLocaleString(loc,{useGrouping:"always"}),sg=n=>(n>0?"+":n<0?"−":"")+fmt(Math.abs(n)),pc=(n,b)=>b?(n>=0?"+":"−")+Math.abs(n/b*100).toFixed(Math.abs(n/b*100)<10?1:0)+"%":"";
+const cls=n=>n>0?"up":n<0?"down":"flat";
+const grad=(id,n)=>{const h=(id*67+n.length*29)%360;return`linear-gradient(135deg,hsl(${h} 70% 55%),hsl(${(h+45)%360} 70% 42%))`};
+const hap=()=>{try{tg&&tg.HapticFeedback&&tg.HapticFeedback.selectionChanged()}catch(e){}};
+const msg=(e,t,s,btn)=>{$("app").innerHTML=`<div class="msg"><div class="e">${e}</div><b>${t}</b>${s||""}${btn?`<br><button class="cc on" style="margin:16px auto 0" id="rt">${T.retry}</button>`:""}</div>`;if(btn)$("rt").onclick=main};
+
+/* ---------- descifrado (WebCrypto): la llave solo está en el botón del dueño ---------- */
+const b64u=s=>{s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return Uint8Array.from(atob(s),c=>c.charCodeAt(0))};
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+async function decrypt(blob,key){const raw=Uint8Array.from(atob(blob),c=>c.charCodeAt(0)),nonce=raw.slice(0,12),ct=raw.slice(12);
+ const ck=await crypto.subtle.importKey("raw",key,{name:"HMAC",hash:"SHA-256"},false,["sign"]),out=new Uint8Array(ct.length);
+ for(let i=0;i*32<ct.length;i++){const m=new Uint8Array(16);m.set(nonce);new DataView(m.buffer).setUint32(12,i);
+  const ks=new Uint8Array(await crypto.subtle.sign("HMAC",ck,m));for(let j=0;j<32&&i*32+j<ct.length;j++)out[i*32+j]=ct[i*32+j]^ks[j]}
+ return JSON.parse(new TextDecoder().decode(out))}
+
+/* ---------- datos ---------- */
+let CH=[],UPD="",sel=-1,range=14,SER=null;
+const dstr=d=>d.toISOString().slice(0,10),addd=(s,n)=>{const d=new Date(s+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return dstr(d)};
+function prep(c){const m=new Map(c.h);const days=[];let a=c.h[0][0],z=c.h[c.h.length-1][0];for(let d=a;d<=z;d=addd(d,1))days.push(d);
+ let last=c.h[0][1];c.days=days;c.v=days.map(d=>{if(m.has(d))last=m.get(d);return last});return c}
+function series(list){ // suma alineada por fecha; antes de existir, un canal aporta su primer valor (sin saltos falsos)
+ const end=list.map(c=>c.days[c.days.length-1]).sort().pop(),start=list.map(c=>c.days[0]).sort()[0],days=[];for(let d=start;d<=end;d=addd(d,1))days.push(d);
+ const v=days.map(d=>list.reduce((s,c)=>{const i=c.days.indexOf(d);return s+(i<0?(d<c.days[0]?c.v[0]:c.v[c.v.length-1]):c.v[i])},0));return{days,v}}
+const dlt=(v,k)=>v.length>1?v[v.length-1]-v[Math.max(0,v.length-1-k)]:0;
+function path(pts){if(pts.length<2)return"";let d=`M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+ for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2,t=.18;
+  d+=`C${(p1[0]+(p2[0]-p0[0])*t).toFixed(1)} ${(p1[1]+(p2[1]-p0[1])*t).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])*t).toFixed(1)} ${(p2[1]-(p3[1]-p1[1])*t).toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`}return d}
+function chart(days,v){const W=340,H=170,pt=14,pb=6,n=v.length;if(n<2)return"";const mn=Math.min(...v),mx=Math.max(...v),r=(mx-mn)||1;
+ const P=v.map((y,i)=>[i*W/(n-1),H-pb-(y-mn)/r*(H-pt-pb)]),p=path(P);
+ return`<svg class="ch" id="svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+ <path d="${p}L${W} ${H}L0 ${H}Z" fill="url(#g)"/><path d="${p}" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+ <line id="cl" y1="0" y2="${H}" stroke="#fff" stroke-opacity=".5" stroke-dasharray="3 4" opacity="0" vector-effect="non-scaling-stroke"/></svg><div class="tip" id="tip"></div>`}
+function spark(v,col){const W=74,H=34,n=v.length;if(n<2)return`<svg viewBox="0 0 ${W} ${H}"></svg>`;const mn=Math.min(...v),mx=Math.max(...v),r=(mx-mn)||1;
+ const p=path(v.map((y,i)=>[i*W/(n-1),H-3-(y-mn)/r*(H-6)]));return`<svg viewBox="0 0 ${W} ${H}"><path d="${p}" fill="none" stroke="${col}" stroke-width="2.4" stroke-linecap="round"/></svg>`}
+function avatar(c,l){return`<div class="av${l?" l":""}" style="background:${grad(c.i,c.n)}">${esc(c.n.trim().charAt(0).toUpperCase()||"?")}${c.a?`<img src="av/${c.i}.jpg" alt="" onload="this.classList.add('ok')" onerror="this.remove()">`:""}</div>`}
+
+/* ---------- vista ---------- */
+function view(){const list=sel<0?CH:[CH[sel]],S=series(list),v=S.v.slice(-(range+1)),days=S.days.slice(-(range+1)),cur=S.v[S.v.length-1];
+ const g=dlt(S.v,range),g1=dlt(S.v,1),g7=dlt(S.v,7),g30=dlt(S.v,30),base=v[0]||1;
+ const diffs=[];for(let i=1;i<S.v.length;i++)diffs.push([S.days[i],S.v[i]-S.v[i-1]]);const win=diffs.slice(-range),bd=win.length?win.reduce((a,b)=>b[1]>a[1]?b:a):null,avg=win.length?win.reduce((s,x)=>s+x[1],0)/win.length:0;
+ const dshort=s=>new Date(s+"T12:00:00Z").toLocaleDateString(loc,{day:"numeric",month:"short",timeZone:"UTC"});
+ const chip=(l,n)=>`<span class="d ${n>0?"u":n<0?"d":""}">${n>0?"▲":n<0?"▼":"•"} ${sg(n)} <b>${l}</b></span>`;
+ let h=`<header><small>${T.hs}</small><h1>${T.ht}</h1></header>`;
+ h+=`<div class="chs"><button class="cc all ${sel<0?"on":""}" data-s="-1"><span>${T.all} · ${CH.length}</span></button>`+CH.map((c,i)=>`<button class="cc ${sel===i?"on":""}" data-s="${i}">${avatar(c)}<span>${esc(c.n)}</span></button>`).join("")+`</div>`;
+ h+=`<div class="hero"><div class="hl">${sel<0?T.tot:esc(CH[sel].n)}</div><div class="hn num" id="hn" data-v="${cur}">${fmt(cur)}</div><div class="dl">${chip(T.h24,g1)}${chip(T.d7,g7)}${chip(T.d30,g30)}</div>
+  <div class="rng">${[7,14,30,60].map(r=>`<button data-r="${r}" class="${range===r?"on":""}">${r}${lang==="en"||lang==="pt"?"d":lang==="ru"?"д":lang==="hi"?"दि":"d"}</button>`).join("")}</div><div class="cw">${chart(days,v)}</div></div>`;
+ h+=`<div class="grid"><div class="k"><small>📈 ${T.grow}</small><b class="num ${cls(g)}">${sg(g)}</b><i class="num">${pc(g,base)} · ${range} ${T.dayn}</i></div>
+ <div class="k"><small>⚡ ${T.avg}</small><b class="num ${cls(avg)}">${avg>0?"+":avg<0?"−":""}${Math.abs(avg).toLocaleString(loc,{maximumFractionDigits:1})}</b><i>${T.perday}</i></div>
+ <div class="k"><small>🏅 ${T.best}</small><b class="num ${bd&&bd[1]>0?"up":"flat"}">${bd?sg(bd[1]):"–"}</b><i>${bd?dshort(bd[0]):""}</i></div>
+ <div class="k"><small>👥 ${T.mem}</small><b class="num">${fmt(cur)}</b><i>${T.now}</i></div></div>`;
+ if(sel>=0){const c=CH[sel],pct=Math.max(1,Math.round(c.r/c.o*100));
+  h+=`<div class="rank"><div class="t num">#${c.r}</div><div style="flex:1"><p><b>${T.rank}</b> · ${T.of} ${c.o}</p><div class="pb"><i style="width:${100-pct+Math.round(100/c.o)}%"></i></div><p style="margin-top:6px">${T.top} ${pct}${T.topq}</p></div></div>`}
+ h+=`<h2>${T.daily}</h2><div class="list">`;const last=diffs.slice(-7).reverse(),mx=Math.max(1,...last.map(x=>Math.abs(x[1])));
+ h+=last.map((x,i)=>`<div class="day"><span>${i===0&&x[0]===S.days[S.days.length-1]?T.today:dshort(x[0])}<small>${new Date(x[0]+"T12:00:00Z").toLocaleDateString(loc,{weekday:"short",timeZone:"UTC"})}</small></span>
+  <div class="bw"><i style="${x[1]>=0?`left:0;background:var(--up)`:`right:0;background:var(--down)`};width:${Math.max(3,Math.abs(x[1])/mx*100)}%"></i></div><em class="num ${cls(x[1])}">${sg(x[1])}</em></div>`).join("")+`</div>`;
+ if(sel<0&&CH.length>1){h+=`<h2>${T.chans}</h2><div class="list">`+CH.map((c,i)=>{const d=dlt(c.v,range),col=d>=0?"#34d399":"#fb7185";
+  return`<div class="cr" data-s="${i}">${avatar(c,1)}<div class="mid"><div class="nm">${esc(c.n)}</div><div class="mt">${c.t==="g"?T.group:T.channel} · #${c.r} / ${c.o}</div></div>${spark(c.v.slice(-(range+1)),col)}<div class="r num">${fmt(c.m)}<small class="${cls(d)}">${sg(d)}</small></div></div>`}).join("")+`</div>`}
+ h+=`<div class="foot">${T.upd}: ${new Date(UPD).toLocaleString(loc,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</div>`;
+ $("app").innerHTML=h;
+ document.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{sel=+b.dataset.s;hap();view();window.scrollTo({top:0,behavior:"smooth"});const a=document.querySelector(".cc.on");a&&a.scrollIntoView({inline:"center",block:"nearest"})});
+ document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{range=+b.dataset.r;hap();view()});
+ count($("hn"),cur);scrub(days,v);
+ const on=document.querySelector(".chs .on");if(on)on.parentNode.scrollLeft=on.offsetLeft-16}
+function count(el,to){const t0=performance.now(),from=to*.82;(function f(t){const k=Math.min(1,(t-t0)/700),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(f)})(t0)}
+function scrub(days,v){const svg=$("svg");if(!svg)return;const cl=$("cl"),tip=$("tip"),W=340,cw=svg.parentNode;
+ const mv=e=>{const r=svg.getBoundingClientRect(),x=Math.max(0,Math.min(1,((e.touches?e.touches[0].clientX:e.clientX)-r.left)/r.width)),i=Math.round(x*(v.length-1)),px=i/(v.length-1);
+  cl.setAttribute("x1",px*W);cl.setAttribute("x2",px*W);cl.setAttribute("opacity",1);const d=i?v[i]-v[i-1]:0;
+  tip.innerHTML=`${fmt(v[i])}<small>${new Date(days[i]+"T12:00:00Z").toLocaleDateString(loc,{day:"numeric",month:"short",timeZone:"UTC"})}${i?" · "+sg(d):""}</small>`;
+  tip.style.left=Math.max(44,Math.min(cw.clientWidth-44,px*cw.clientWidth))+"px";tip.style.opacity=1};
+ const out=()=>{cl.setAttribute("opacity",0);tip.style.opacity=0};
+ svg.addEventListener("touchstart",mv,{passive:true});svg.addEventListener("touchmove",mv,{passive:true});svg.addEventListener("touchend",out);svg.addEventListener("mousemove",mv);svg.addEventListener("mouseleave",out)}
+
+async function main(){
+ const k=qs.get("k");if(!k)return msg("🔒",T.nokey,`<div>${T.nokey2}</div>`);
+ $("app").innerHTML=`<header><small>${T.hs}</small><h1>${T.ht}</h1></header><div class="sk" style="height:60px"></div><div class="sk" style="height:300px"></div><div class="sk"></div>`;
+ try{const key=b64u(k),idx=hex(await crypto.subtle.digest("SHA-256",key)).slice(0,16);
+  const r=await fetch("stats.json?t="+Date.now());if(!r.ok)throw 0;const j=await r.json();UPD=j.updated;
+  if(!j.u[idx])return msg("⏳",T.nodata,`<div>${T.nodata2}</div>`);
+  CH=(await decrypt(j.u[idx],key)).ch.filter(c=>c.h&&c.h.length).map(prep).sort((a,b)=>b.m-a.m);
+  if(!CH.length)return msg("⏳",T.nodata,`<div>${T.nodata2}</div>`);
+  if(CH.every(c=>c.days.length<2))return msg("🌱",T.nohist,`<div>${T.nohist2}</div>`);
+  if(CH.length===1)sel=0;view()}
+ catch(e){msg("📡",T.err,"",1)}}
+main();
+</script></body></html>
