@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="color-scheme" content="dark light">
+<meta name="color-scheme" content="dark"><meta name="theme-color" content="#030405">
 <title>Linkora · Stats</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{--bg:#0a0d16;--card:#131827;--card2:#1a2033;--line:#ffffff14;--txt:#f1f4fb;--mut:#8d97ae;--acc:#5b8cff;--acc2:#8a63ff;
---grad:linear-gradient(135deg,#4f8cff 0%,#7b5cff 100%);--glow:#5b8cff33;--up:#34d399;--down:#fb7185;--r:22px;--font:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
-:root[data-theme=light]{--bg:#f3f5fb;--card:#ffffff;--card2:#eef1f9;--line:#0f172a12;--txt:#0f172a;--mut:#64708a;--glow:#5b8cff22;--up:#059669;--down:#e11d48}
+:root{--bg:#030405;--card:#090c11;--card2:#111821;--line:#1685ff3b;--txt:#f4f8ff;--mut:#95a6bb;--acc:#1685ff;--acc2:#19d7ff;
+--grad:linear-gradient(125deg,#075bff 0%,#078fff 52%,#00c9f2 100%);--glow:#087bff30;--up:#35e6bb;--down:#fb7185;--r:21px;--font:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
 body{margin:0;min-height:100vh;color:var(--txt);font:500 15px/1.4 var(--font);-webkit-font-smoothing:antialiased;
-background:radial-gradient(520px 320px at 90% -60px,#7b5cff30,transparent 70%),radial-gradient(520px 340px at -10% -40px,#4f8cff2e,transparent 70%),var(--bg);padding:0 16px calc(40px + env(safe-area-inset-bottom))}
-:root[data-theme=light] body{background:radial-gradient(520px 320px at 90% -60px,#7b5cff1c,transparent 70%),radial-gradient(520px 340px at -10% -40px,#4f8cff1c,transparent 70%),var(--bg)}
+background:radial-gradient(500px 300px at 88% -95px,#076bff20,transparent 72%),radial-gradient(420px 340px at -12% 170px,#174dff12,transparent 74%),var(--bg);padding:0 16px calc(40px + env(safe-area-inset-bottom))}
 .num{font-variant-numeric:tabular-nums}
-header{padding:22px 2px 14px}
-header small{color:var(--mut);font-weight:600;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase}
-header h1{margin:2px 0 0;font-size:26px;font-weight:800;letter-spacing:-.03em}
+header{position:relative;display:flex;align-items:center;gap:13px;padding:22px 2px 16px;margin-bottom:14px}
+header:after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,#1685ff70,#16d6ff60,transparent)}
+header img{flex:none;width:62px;height:62px;border-radius:50%;filter:drop-shadow(0 0 13px #087bff45)}
+header small{display:block;color:#35cfff;font-weight:800;font-size:9px;letter-spacing:.2em;text-transform:uppercase}
+header h1{margin:1px 0 0;font-size:25px;font-weight:800;letter-spacing:-.045em}
 .chs{display:flex;gap:9px;overflow-x:auto;margin:0 -16px 14px;padding:2px 16px 4px;scrollbar-width:none}
 .chs::-webkit-scrollbar{display:none}
 .cc{flex:none;display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--txt);font:700 13px var(--font);cursor:pointer;transition:.2s;max-width:210px}
@@ -28,8 +28,7 @@ header h1{margin:2px 0 0;font-size:26px;font-weight:800;letter-spacing:-.03em}
 .av{flex:none;position:relative;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;overflow:hidden;box-shadow:inset 0 0 0 1px #ffffff25}
 .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s}.av img.ok{opacity:1}
 .av.l{width:46px;height:46px;border-radius:16px;font-size:18px}
-.hero{position:relative;border-radius:28px;padding:20px 18px 12px;background:linear-gradient(160deg,#2a3f8f 0%,#4b3aa8 55%,#5b3fb5 100%);color:#fff;overflow:hidden;box-shadow:0 18px 40px #4b3aa855;animation:in .5s both}
-:root[data-theme=light] .hero{box-shadow:0 18px 36px #5b3fb544}
+.hero{position:relative;border-radius:28px;padding:20px 18px 12px;background:linear-gradient(150deg,#0a3fc4 0%,#0670ee 58%,#05b4e0 100%);color:#fff;overflow:hidden;border:1px solid #8be6ff40;box-shadow:0 18px 40px #087bff33;animation:in .5s both}
 .hero:before{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#ffffff2e,transparent 70%)}
 .hl{font-size:13px;font-weight:600;opacity:.8}
 .hn{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1.1;margin:2px 0 10px}
@@ -38,7 +37,7 @@ header h1{margin:2px 0 0;font-size:26px;font-weight:800;letter-spacing:-.03em}
 .d.u{color:#86efac}.d.d{color:#fecdd3}.d b{font-weight:600;opacity:.75}
 .rng{display:flex;gap:4px;margin:14px 0 2px;padding:3px;border-radius:14px;background:#00000026;width:max-content}
 .rng button{border:0;background:none;color:#ffffffb3;font:700 12px var(--font);padding:7px 12px;border-radius:11px;cursor:pointer}
-.rng button.on{background:#ffffff;color:#2b2f6b}
+.rng button.on{background:#ffffff;color:#06307a}
 .cw{position:relative;margin:6px -6px 0;touch-action:pan-y}
 svg.ch{display:block;width:100%;height:170px;overflow:visible}
 .tip{position:absolute;top:2px;pointer-events:none;transform:translateX(-50%);padding:6px 10px;border-radius:12px;background:#0b0e1ccc;backdrop-filter:blur(8px);font-size:12px;font-weight:700;white-space:nowrap;opacity:0;transition:opacity .15s;text-align:center}
@@ -64,14 +63,14 @@ h2{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:24px 2px 12px}
 .rank{display:flex;align-items:center;gap:14px;margin-top:14px;padding:16px;border-radius:var(--r);background:var(--card);border:1px solid var(--line)}
 .rank .t{font-size:30px;font-weight:800;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rank p{margin:0;color:var(--mut);font-weight:600;font-size:13px}.rank p b{color:var(--txt)}
-.pb{height:8px;border-radius:99px;background:var(--card2);margin-top:8px;overflow:hidden}.pb i{display:block;height:100%;border-radius:99px;background:var(--grad)}
+.pb{height:8px;border-radius:99px;background:var(--card2);margin-top:8px;overflow:hidden}.pb i{display:block;height:100%;border-radius:99px;background:var(--grad)}.k,.day,.cr,.rank{box-shadow:0 7px 19px #00000016,inset 0 1px 0 #ffffff07}
 .msg{text-align:center;padding:90px 24px;color:var(--mut)}.msg .e{font-size:54px;margin-bottom:10px}.msg b{display:block;color:var(--txt);font-size:18px;font-weight:800;margin-bottom:6px}
 .sk{height:120px;border-radius:var(--r);margin-bottom:11px;background:linear-gradient(100deg,var(--card) 30%,var(--card2) 50%,var(--card) 70%);background-size:200% 100%;animation:sh 1.3s infinite linear}
 @keyframes sh{to{background-position:-200% 0}}
 @keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .foot{text-align:center;color:var(--mut);font-size:12px;margin-top:22px}
 </style></head><body>
-<div id="app"><header><small id="hs"></small><h1 id="ht"></h1></header><div class="sk" style="height:60px"></div><div class="sk" style="height:300px"></div><div class="sk"></div></div>
+<div id="app"><header><img src="logo.gif" alt=""><div><small id="hs"></small><h1 id="ht"></h1></div></header><div class="sk" style="height:60px"></div><div class="sk" style="height:300px"></div><div class="sk"></div></div>
 <script>
 const tg=window.Telegram&&Telegram.WebApp;
 const L={
@@ -98,9 +97,8 @@ hi:{hs:"आपका डैशबोर्ड",ht:"आँकड़े",all:"स�
 const qs=new URLSearchParams(location.search);
 let lang=(qs.get("lang")||(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user&&tg.initDataUnsafe.user.language_code)||navigator.language||"es").slice(0,2);
 if(!L[lang])lang="es";const T=L[lang];document.documentElement.lang=lang;
-const dark=tg&&tg.colorScheme?tg.colorScheme==="dark":!(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches);
-document.documentElement.dataset.theme=dark?"dark":"light";
-if(tg){try{tg.ready();tg.expand();tg.setHeaderColor(dark?"#0a0d16":"#f3f5fb");tg.setBackgroundColor(dark?"#0a0d16":"#f3f5fb")}catch(e){}}
+document.documentElement.dataset.theme="dark";
+if(tg){try{tg.ready();tg.expand();tg.setHeaderColor("#030405");tg.setBackgroundColor("#030405")}catch(e){}}
 const loc=lang==="hi"?"en-IN":lang,$=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fmt=n=>Math.round(n).toLocaleString(loc,{useGrouping:"always"}),sg=n=>(n>0?"+":n<0?"−":"")+fmt(Math.abs(n)),pc=(n,b)=>b?(n>=0?"+":"−")+Math.abs(n/b*100).toFixed(Math.abs(n/b*100)<10?1:0)+"%":"";
 const cls=n=>n>0?"up":n<0?"down":"flat";
@@ -144,7 +142,7 @@ function view(){const list=sel<0?CH:[CH[sel]],S=series(list),v=S.v.slice(-(range
  const diffs=[];for(let i=1;i<S.v.length;i++)diffs.push([S.days[i],S.v[i]-S.v[i-1]]);const win=diffs.slice(-range),bd=win.length?win.reduce((a,b)=>b[1]>a[1]?b:a):null,avg=win.length?win.reduce((s,x)=>s+x[1],0)/win.length:0;
  const dshort=s=>new Date(s+"T12:00:00Z").toLocaleDateString(loc,{day:"numeric",month:"short",timeZone:"UTC"});
  const chip=(l,n)=>`<span class="d ${n>0?"u":n<0?"d":""}">${n>0?"▲":n<0?"▼":"•"} ${sg(n)} <b>${l}</b></span>`;
- let h=`<header><small>${T.hs}</small><h1>${T.ht}</h1></header>`;
+ let h=`<header><img src="logo.gif" alt=""><div><small>${T.hs}</small><h1>${T.ht}</h1></div></header>`;
  h+=`<div class="chs"><button class="cc all ${sel<0?"on":""}" data-s="-1"><span>${T.all} · ${CH.length}</span></button>`+CH.map((c,i)=>`<button class="cc ${sel===i?"on":""}" data-s="${i}">${avatar(c)}<span>${esc(c.n)}</span></button>`).join("")+`</div>`;
  h+=`<div class="hero"><div class="hl">${sel<0?T.tot:esc(CH[sel].n)}</div><div class="hn num" id="hn" data-v="${cur}">${fmt(cur)}</div><div class="dl">${chip(T.h24,g1)}${chip(T.d7,g7)}${chip(T.d30,g30)}</div>
   <div class="rng">${[7,14,30,60].map(r=>`<button data-r="${r}" class="${range===r?"on":""}">${r}${lang==="en"||lang==="pt"?"d":lang==="ru"?"д":lang==="hi"?"दि":"d"}</button>`).join("")}</div><div class="cw">${chart(days,v)}</div></div>`;
@@ -176,7 +174,7 @@ function scrub(days,v){const svg=$("svg");if(!svg)return;const cl=$("cl"),tip=$(
 
 async function main(){
  const k=qs.get("k");if(!k)return msg("🔒",T.nokey,`<div>${T.nokey2}</div>`);
- $("app").innerHTML=`<header><small>${T.hs}</small><h1>${T.ht}</h1></header><div class="sk" style="height:60px"></div><div class="sk" style="height:300px"></div><div class="sk"></div>`;
+ $("app").innerHTML=`<header><img src="logo.gif" alt=""><div><small>${T.hs}</small><h1>${T.ht}</h1></div></header><div class="sk" style="height:60px"></div><div class="sk" style="height:300px"></div><div class="sk"></div>`;
  try{const key=b64u(k),idx=hex(await crypto.subtle.digest("SHA-256",key)).slice(0,16);
   const r=await fetch("stats.json?t="+Date.now());if(!r.ok)throw 0;const j=await r.json();UPD=j.updated;
   if(!j.u[idx])return msg("⏳",T.nodata,`<div>${T.nodata2}</div>`);
